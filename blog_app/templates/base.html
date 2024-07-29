@@ -26,6 +26,8 @@
         <a href="{{ post.get_absolute_url }}">
           {{ post.title }}
       </li> 
+      {% empty %}
+      <li>No posts yet.</li>
       {% endfor %}
     </ul>
   </div>
