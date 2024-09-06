@@ -24,6 +24,7 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
+    path('images/', include('images.urls')),
     path('social-auth/', include('social_django.urls'), name='social')
 ]
 

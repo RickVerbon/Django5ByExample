@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
 from .forms import (
@@ -13,7 +13,7 @@ from .forms import (
 from .models import Profile
 
 
-def user_login(request) -> HttpResponse:
+def user_login(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -37,7 +37,7 @@ def user_login(request) -> HttpResponse:
 
 
 @login_required
-def dashboard(request) -> HttpResponse:
+def dashboard(request: HttpRequest) -> HttpResponse:
     return render(
         request,
         'account/dashboard.html',
@@ -45,7 +45,7 @@ def dashboard(request) -> HttpResponse:
     )
 
 
-def register(request) -> HttpResponse:
+def register(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
@@ -72,7 +72,7 @@ def register(request) -> HttpResponse:
 
 
 @login_required
-def edit(request) -> HttpResponse:
+def edit(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         user_form = UserEditForm(
             instance=request.user,
