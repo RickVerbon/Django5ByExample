@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -12,7 +13,7 @@ from .forms import (
 from .models import Profile
 
 
-def user_login(request):
+def user_login(request) -> HttpResponse:
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -36,7 +37,7 @@ def user_login(request):
 
 
 @login_required
-def dashboard(request):
+def dashboard(request) -> HttpResponse:
     return render(
         request,
         'account/dashboard.html',
@@ -44,7 +45,7 @@ def dashboard(request):
     )
 
 
-def register(request):
+def register(request) -> HttpResponse:
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
@@ -71,7 +72,7 @@ def register(request):
 
 
 @login_required
-def edit(request):
+def edit(request) -> HttpResponse:
     if request.method == 'POST':
         user_form = UserEditForm(
             instance=request.user,
@@ -85,6 +86,9 @@ def edit(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            messages.success(request, message='Profile updated successfully')
+        else:
+            messages.error(request, message='Error updating your profile')
     else:
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
